@@ -8,7 +8,7 @@ namespace RestAPI.API.Configurations
     {
         public static void AddDatabaseConfiguration(this IServiceCollection services) 
         {
-            services.AddDbContext<RestApiDbContext>(options => options.UseInMemoryDatabase("RestAPI"));
+            services.AddDbContext<RestApiDbContext>(options => options.UseSqlite("Data Source=RestAPI.db"));
         }
     }
 }
