@@ -6,7 +6,7 @@ namespace RestAPI.Domain.Entities
 {
     public class Product : Entity, IAggregateRoot
     {
-        public string Name { get; private set; }
+        public string Name { get; set; }
         public string Description { get; set; }
         public string Image { get; set; }
         public int QuantityAvailable { get; set; }
