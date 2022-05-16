@@ -1,9 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using RestAPI.Application.DTOs;
 using RestAPI.Application.Interfaces;
-using System;
-using System.Collections.Generic;
-using System.Threading.Tasks;
+using RestAPI.Application.Parameters;
 
 namespace RestAPI.API.Controllers
 {
@@ -17,15 +15,9 @@ namespace RestAPI.API.Controllers
         }
 
         [HttpGet]
-        public async Task<IEnumerable<ProductDTO>> GetProducts()
+        public PagedList<ProductDTO> GetProducts([FromQuery] ProductParameters productParameters)
         {
-            return await _productService.GetProducts();
-        }
-
-        [HttpGet("{productId:guid}")]
-        public async Task<ProductDTO> GetProductById(Guid productId)
-        {
-            return await _productService.GetProductById(productId);
+            return _productService.GetProducts(productParameters);
         }
     }
 }

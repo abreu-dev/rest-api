@@ -1,10 +1,11 @@
 ﻿using AutoMapper;
 using RestAPI.Application.DTOs;
 using RestAPI.Application.Interfaces;
+using RestAPI.Application.Parameters;
+using RestAPI.Domain.Entities;
 using RestAPI.Domain.Interfaces;
-using System;
 using System.Collections.Generic;
-using System.Threading.Tasks;
+using System.Linq;
 
 namespace RestAPI.Application.Services
 {
@@ -19,14 +20,20 @@ namespace RestAPI.Application.Services
             _productRepository = productRepository;
         }
 
-        public async Task<IEnumerable<ProductDTO>> GetProducts()
+        public PagedList<ProductDTO> GetProducts(ProductParameters productParameters)
         {
-            return _mapper.Map<IEnumerable<ProductDTO>>(await _productRepository.GetProducts());
-        }
+            var pagedList = PagedList<Product>.ToPagedList(
+                _productRepository.Query().OrderBy(on => on.Name),
+                productParameters._page,
+                productParameters._size);
 
-        public async Task<ProductDTO> GetProductById(Guid productId)
-        {
-            return _mapper.Map<ProductDTO>(await _productRepository.GetProductById(productId));
+            var mappedPagedList = new PagedList<ProductDTO>(
+                _mapper.Map<IEnumerable<ProductDTO>>(pagedList.Data),
+                pagedList.TotalItems,
+                pagedList.CurrentPage,
+                pagedList.TotalPages);
+
+            return mappedPagedList;
         }
     }
 }

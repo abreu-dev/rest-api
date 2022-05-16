@@ -2,10 +2,7 @@
 using RestAPI.Domain.Entities;
 using RestAPI.Domain.Interfaces;
 using RestAPI.Infra.Data.Context;
-using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 
 namespace RestAPI.Infra.Data.Repositories
 {
@@ -18,17 +15,10 @@ namespace RestAPI.Infra.Data.Repositories
             _restApiDbContext = restApiDbContext;
         }
 
-        public async Task<Product> GetProductById(Guid productId)
+        public IQueryable<Product> Query()
         {
-            var products = await GetProducts();
-            return products.FirstOrDefault(x => x.Id == productId);
-        }
-
-        public async Task<IEnumerable<Product>> GetProducts()
-        {
-            return await _restApiDbContext.Product
-                .Include(p => p.Category)
-                .ToListAsync();
+            return _restApiDbContext.Product
+                .Include(p => p.Category);
         }
     }
 }

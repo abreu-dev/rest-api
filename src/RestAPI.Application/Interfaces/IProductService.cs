@@ -1,13 +1,10 @@
 ﻿using RestAPI.Application.DTOs;
-using System;
-using System.Collections.Generic;
-using System.Threading.Tasks;
+using RestAPI.Application.Parameters;
 
 namespace RestAPI.Application.Interfaces
 {
     public interface IProductService
     {
-        Task<IEnumerable<ProductDTO>> GetProducts();
-        Task<ProductDTO> GetProductById(Guid productId);
+        PagedList<ProductDTO> GetProducts(ProductParameters productParameters);
     }
 }
