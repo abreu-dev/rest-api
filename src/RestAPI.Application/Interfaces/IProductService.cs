@@ -6,7 +6,7 @@ namespace RestAPI.Application.Interfaces
 {
     public interface IProductService
     {
-        IEnumerable<ProductDTO> GetProducts();
-        PagedList<ProductDTO> GetProducts(ProductParameters productParameters);
+        IEnumerable<ProductDTO> GetProducts(ProductParameters productParameters);
+        PagedList<ProductDTO> GetPaginatedProducts(ProductParameters productParameters);
     }
 }

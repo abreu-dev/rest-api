@@ -17,16 +17,16 @@ namespace RestAPI.API.Controllers
 
         [HttpGet]
         [Route("api/products")]
-        public IEnumerable<ProductDTO> GetProducts()
+        public IEnumerable<ProductDTO> GetProducts([FromQuery] ProductParameters productParameters)
         {
-            return _productService.GetProducts();
+            return _productService.GetProducts(productParameters);
         }
 
         [HttpGet]
         [Route("api/products:paginated")]
         public PagedList<ProductDTO> GetPaginatedProducts([FromQuery] ProductParameters productParameters)
         {
-            return _productService.GetProducts(productParameters);
+            return _productService.GetPaginatedProducts(productParameters);
         }
     }
 }

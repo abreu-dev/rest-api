@@ -21,26 +21,21 @@ namespace RestAPI.Application.Services
             _productRepository = productRepository;
         }
 
-        public IEnumerable<ProductDTO> GetProducts()
-        {
-            return _mapper.Map<IEnumerable<ProductDTO>>(_productRepository.Query().ToList());
-        }
-
-        public PagedList<ProductDTO> GetProducts(ProductParameters productParameters)
+        public IEnumerable<ProductDTO> GetProducts(ProductParameters productParameters)
         {
             var products = _productRepository
                 .Query();
+            products = ApplyFilters(products, productParameters);
+            products = products.OrderBy(on => on.Name);
 
-            if (!string.IsNullOrEmpty(productParameters.Name))
-            {
-                products = LinqLambdaBuilder.ApplyFilter(products, "Name", productParameters.Name);
-            }
+            return _mapper.Map<IEnumerable<ProductDTO>>(products.ToList());
+        }
 
-            if (!string.IsNullOrEmpty(productParameters.Description))
-            {
-                products = LinqLambdaBuilder.ApplyFilter(products, "Description", productParameters.Description);
-            }
-
+        public PagedList<ProductDTO> GetPaginatedProducts(ProductParameters productParameters)
+        {
+            var products = _productRepository
+                .Query();
+            products = ApplyFilters(products, productParameters);
             products = products.OrderBy(on => on.Name);
 
             var pagedList = PagedList<Product>.ToPagedList(
@@ -55,6 +50,21 @@ namespace RestAPI.Application.Services
                 pagedList.TotalPages);
 
             return mappedPagedList;
+        }
+
+        public IQueryable<Product> ApplyFilters(IQueryable<Product> products, ProductParameters productParameters)
+        {
+            if (!string.IsNullOrEmpty(productParameters.Name))
+            {
+                products = LinqLambdaBuilder.ApplyFilter(products, "Name", productParameters.Name);
+            }
+
+            if (!string.IsNullOrEmpty(productParameters.Description))
+            {
+                products = LinqLambdaBuilder.ApplyFilter(products, "Description", productParameters.Description);
+            }
+
+            return products;
         }
     }
 }
