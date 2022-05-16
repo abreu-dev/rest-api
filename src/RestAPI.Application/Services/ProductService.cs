@@ -24,8 +24,8 @@ namespace RestAPI.Application.Services
         {
             var pagedList = PagedList<Product>.ToPagedList(
                 _productRepository.Query().OrderBy(on => on.Name),
-                productParameters._page,
-                productParameters._size);
+                productParameters.Page,
+                productParameters.Size);
 
             var mappedPagedList = new PagedList<ProductDTO>(
                 _mapper.Map<IEnumerable<ProductDTO>>(pagedList.Data),
