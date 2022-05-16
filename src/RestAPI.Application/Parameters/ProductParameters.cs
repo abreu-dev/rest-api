@@ -1,8 +1,8 @@
 ﻿namespace RestAPI.Application.Parameters
 {
-    public class ProductParameters
+    public class ProductParameters : QueryStringParameters
     {
-        public int Page { get; set; }
-        public int Size { get; set; }
+        public string Name { get; set; }
+        public string Description { get; set; }
     }
 }
