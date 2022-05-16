@@ -19,6 +19,7 @@ namespace RestAPI.API.Controllers
         /// <response code="200">Serviço funcionando normalmente</response>
         /// <response code="503">Serviço está com problema</response>
         [HttpGet]
+        [Route("api/health")]
         public IActionResult Health()
         {
             if (_healthService.IsHealthy())

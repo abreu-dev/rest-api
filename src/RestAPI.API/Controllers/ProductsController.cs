@@ -2,6 +2,7 @@
 using RestAPI.Application.DTOs;
 using RestAPI.Application.Interfaces;
 using RestAPI.Application.Parameters;
+using System.Collections.Generic;
 
 namespace RestAPI.API.Controllers
 {
@@ -15,7 +16,15 @@ namespace RestAPI.API.Controllers
         }
 
         [HttpGet]
-        public PagedList<ProductDTO> GetProducts([FromQuery] ProductParameters productParameters)
+        [Route("api/products")]
+        public IEnumerable<ProductDTO> GetProducts()
+        {
+            return _productService.GetProducts();
+        }
+
+        [HttpGet]
+        [Route("api/products:paginated")]
+        public PagedList<ProductDTO> GetPaginatedProducts([FromQuery] ProductParameters productParameters)
         {
             return _productService.GetProducts(productParameters);
         }

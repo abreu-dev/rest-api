@@ -20,6 +20,11 @@ namespace RestAPI.Application.Services
             _productRepository = productRepository;
         }
 
+        public IEnumerable<ProductDTO> GetProducts()
+        {
+            return _mapper.Map<IEnumerable<ProductDTO>>(_productRepository.Query().ToList());
+        }
+
         public PagedList<ProductDTO> GetProducts(ProductParameters productParameters)
         {
             var pagedList = PagedList<Product>.ToPagedList(
