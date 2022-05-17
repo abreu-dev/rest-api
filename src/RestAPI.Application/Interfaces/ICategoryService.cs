@@ -7,5 +7,7 @@ namespace RestAPI.Application.Interfaces
     public interface ICategoryService
     {
         PagedResponse<CategoryDTO> GetPagedCategories(CategoryParameters parameters);
+
+        Response AddCategory(CategoryDTO categoryDTO);
     }
 }

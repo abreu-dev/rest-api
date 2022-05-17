@@ -34,7 +34,7 @@ namespace RestAPI.Application.Services
                 .Take(parameters.Size)
                 .ToList());
 
-            return new PagedResponse<ProductDTO>(items, totalItems, parameters.Page, totalPages);
+            return new PagedResponse<ProductDTO>(items, parameters.Page, totalItems, totalPages);
         }
     }
 }

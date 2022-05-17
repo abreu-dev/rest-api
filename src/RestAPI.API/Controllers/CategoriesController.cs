@@ -21,5 +21,19 @@ namespace RestAPI.API.Controllers
         {
             return _categoryService.GetPagedCategories(parameters);
         }
+
+        [HttpPost]
+        [Route("api/categories")]
+        public IActionResult Post([FromBody] CategoryDTO categoryDTO)
+        {
+            var response = _categoryService.AddCategory(categoryDTO);
+
+            if (response.IsValid())
+            {
+                return Ok();
+            }
+
+            return BadRequest(response);
+        }
     }
 }

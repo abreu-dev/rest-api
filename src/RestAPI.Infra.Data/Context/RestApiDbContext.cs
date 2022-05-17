@@ -18,6 +18,11 @@ namespace RestAPI.Infra.Data.Context
             base.OnModelCreating(modelBuilder);
         }
 
+        public bool Commit()
+        {
+            return SaveChanges() > 0;
+        }
+
         public bool IsAvailable()
         {
             return Database.CanConnect();

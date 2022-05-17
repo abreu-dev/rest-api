@@ -1,10 +1,7 @@
-﻿using System;
-
-namespace RestAPI.Application.DTOs
+﻿namespace RestAPI.Application.DTOs
 {
-    public class CategoryDTO
+    public class CategoryDTO : DTO
     {
-        public Guid Id { get; set; }
         public string Name { get; set; }
     }
 }

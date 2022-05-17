@@ -5,6 +5,8 @@ namespace RestAPI.Domain.Interfaces
 {
     public interface IProductRepository
     {
+        IUnitOfWork UnitOfWork { get; }
+
         IQueryable<Product> Query();
     }
 }

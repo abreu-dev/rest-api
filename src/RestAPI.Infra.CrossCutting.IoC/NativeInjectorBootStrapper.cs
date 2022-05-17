@@ -13,7 +13,7 @@ namespace RestAPI.Infra.CrossCutting.IoC
         public static void RegisterServices(IServiceCollection services) 
         {
             // Application
-            services.AddAutoMapper(typeof(DomainToDTOMappingProfile));
+            services.AddAutoMapper(typeof(DomainToDTOMappingProfile), typeof(DTOToDomainMappingProfile));
 
             services.AddScoped<IHealthService, HealthService>();
             services.AddScoped<IProductService, ProductService>();

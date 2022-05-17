@@ -10,6 +10,8 @@ namespace RestAPI.Infra.Data.Repositories
     {
         private readonly IRestApiDbContext _restApiDbContext;
 
+        public IUnitOfWork UnitOfWork => _restApiDbContext;
+
         public ProductRepository(IRestApiDbContext restApiDbContext)
         {
             _restApiDbContext = restApiDbContext;
