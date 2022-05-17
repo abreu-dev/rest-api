@@ -12,15 +12,19 @@ namespace RestAPI.Infra.CrossCutting.IoC
     {
         public static void RegisterServices(IServiceCollection services) 
         {
+            // Application
             services.AddAutoMapper(typeof(DomainToDTOMappingProfile));
 
             services.AddScoped<IHealthService, HealthService>();
             services.AddScoped<IProductService, ProductService>();
+            services.AddScoped<ICategoryService, CategoryService>();
 
+            // Infra - Data
             services.AddScoped<IRestApiDbContext, RestApiDbContext>();
             services.AddScoped<RestApiDbContext>();
 
             services.AddScoped<IProductRepository, ProductRepository>();
+            services.AddScoped<ICategoryRepository, CategoryRepository>();
         }
     }
 }

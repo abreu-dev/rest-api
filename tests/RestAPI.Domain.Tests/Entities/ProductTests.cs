@@ -23,7 +23,7 @@ namespace RestAPI.Domain.Tests.Entities
                 Value = 15.78,
                 CurrencyCode = "BRL"
             };
-            var category = new ProductCategory()
+            var category = new Category()
             {
                 Id = Guid.NewGuid(),
                 Name = "Category"

@@ -1,10 +1,9 @@
 ﻿using RestAPI.Domain.Enums;
-using RestAPI.Domain.Interfaces;
 using System;
 
 namespace RestAPI.Domain.Entities
 {
-    public class Product : Entity, IAggregateRoot
+    public class Product : Entity
     {
         public string Name { get; set; }
         public string Description { get; set; }
@@ -16,6 +15,6 @@ namespace RestAPI.Domain.Entities
         public Currency Currency { get; set; }
 
         public Guid CategoryId { get; set; }
-        public ProductCategory Category { get; set; }
+        public Category Category { get; set; }
     }
 }

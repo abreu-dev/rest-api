@@ -9,7 +9,7 @@ namespace RestAPI.Application.AutoMapper
         public DomainToDTOMappingProfile()
         {
             CreateMap<Currency, CurrencyDTO>();
-            CreateMap<ProductCategory, ProductCategoryDTO>();
+            CreateMap<Category, CategoryDTO>();
             CreateMap<Product, ProductDTO>();
         }
     }

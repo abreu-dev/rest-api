@@ -4,7 +4,7 @@ using Xunit;
 
 namespace RestAPI.Domain.Tests.Entities
 {
-    public class ProductCategoryTests
+    public class CategoryTests
     {
         [Fact]
         public void Constructor_ShouldCreateInstance()
@@ -14,7 +14,7 @@ namespace RestAPI.Domain.Tests.Entities
             var name = "Category";
 
             // Act
-            var category = new ProductCategory()
+            var category = new Category()
             {
                 Id = id,
                 Name = name

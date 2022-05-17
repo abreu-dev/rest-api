@@ -17,7 +17,7 @@ namespace RestAPI.Infra.Data.Repositories
 
         public IQueryable<Product> Query()
         {
-            return _restApiDbContext.Product
+            return _restApiDbContext.Products
                 .Include(p => p.Category);
         }
     }

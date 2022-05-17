@@ -12,6 +12,6 @@ namespace RestAPI.Application.DTOs
         public bool IsActive { get; set; }
         public string UnitOfMeasurement { get; set; }
         public CurrencyDTO Currency { get; set; }
-        public ProductCategoryDTO Category { get; set; }
+        public CategoryDTO Category { get; set; }
     }
 }

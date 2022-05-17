@@ -16,6 +16,20 @@ namespace RestAPI.Infra.Data.Migrations
             modelBuilder
                 .HasAnnotation("ProductVersion", "5.0.17");
 
+            modelBuilder.Entity("RestAPI.Domain.Entities.Category", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Name")
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Category");
+                });
+
             modelBuilder.Entity("RestAPI.Domain.Entities.Product", b =>
                 {
                     b.Property<Guid>("Id")
@@ -50,23 +64,9 @@ namespace RestAPI.Infra.Data.Migrations
                     b.ToTable("Product");
                 });
 
-            modelBuilder.Entity("RestAPI.Domain.Entities.ProductCategory", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("Name")
-                        .HasColumnType("TEXT");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("ProductCategory");
-                });
-
             modelBuilder.Entity("RestAPI.Domain.Entities.Product", b =>
                 {
-                    b.HasOne("RestAPI.Domain.Entities.ProductCategory", "Category")
+                    b.HasOne("RestAPI.Domain.Entities.Category", "Category")
                         .WithMany("Products")
                         .HasForeignKey("CategoryId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -98,7 +98,7 @@ namespace RestAPI.Infra.Data.Migrations
                     b.Navigation("Currency");
                 });
 
-            modelBuilder.Entity("RestAPI.Domain.Entities.ProductCategory", b =>
+            modelBuilder.Entity("RestAPI.Domain.Entities.Category", b =>
                 {
                     b.Navigation("Products");
                 });

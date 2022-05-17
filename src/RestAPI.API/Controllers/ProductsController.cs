@@ -17,9 +17,9 @@ namespace RestAPI.API.Controllers
 
         [HttpGet]
         [Route("api/products:paginated")]
-        public PagedResponse<ProductDTO> GetPagedProducts([FromQuery] ProductParameters productParameters)
+        public PagedResponse<ProductDTO> GetPagedProducts([FromQuery] ProductParameters parameters)
         {
-            return _productService.GetPagedProducts(productParameters);
+            return _productService.GetPagedProducts(parameters);
         }
     }
 }

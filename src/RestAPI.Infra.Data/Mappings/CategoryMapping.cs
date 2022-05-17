@@ -4,11 +4,11 @@ using RestAPI.Domain.Entities;
 
 namespace RestAPI.Infra.Data.Mappings
 {
-    public class ProductCategoryMapping : IEntityTypeConfiguration<ProductCategory>
+    public class CategoryMapping : IEntityTypeConfiguration<Category>
     {
-        public void Configure(EntityTypeBuilder<ProductCategory> builder)
+        public void Configure(EntityTypeBuilder<Category> builder)
         {
-            builder.ToTable("ProductCategory");
+            builder.ToTable("Category");
 
             builder.HasKey(c => c.Id);
 

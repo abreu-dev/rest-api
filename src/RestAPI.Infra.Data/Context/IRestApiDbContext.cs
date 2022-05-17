@@ -1,13 +1,12 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using RestAPI.Domain.Entities;
-using RestAPI.Domain.Interfaces;
 
 namespace RestAPI.Infra.Data.Context
 {
-    public interface IRestApiDbContext : IUnitOfWork
+    public interface IRestApiDbContext
     {
-        DbSet<Product> Product { get; set; }
-        DbSet<ProductCategory> ProductCategory { get; set; }
+        DbSet<Product> Products { get; set; }
+        DbSet<Category> Categories { get; set; }
 
         bool IsAvailable();
     }
