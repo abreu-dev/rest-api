@@ -1,12 +1,11 @@
 ﻿using RestAPI.Application.DTOs;
 using RestAPI.Application.Parameters;
-using System.Collections.Generic;
+using RestAPI.Application.Responses;
 
 namespace RestAPI.Application.Interfaces
 {
     public interface IProductService
     {
-        IEnumerable<ProductDTO> GetProducts(ProductParameters productParameters);
-        PagedList<ProductDTO> GetPaginatedProducts(ProductParameters productParameters);
+        PagedResponse<ProductDTO> GetPagedProducts(ProductParameters parameters);
     }
 }
