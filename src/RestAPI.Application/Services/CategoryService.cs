@@ -34,6 +34,10 @@ namespace RestAPI.Application.Services
                 .Query()
                 .OrderBy(p => p.Name);
 
+            // TODO: Add support to dynamic order and if not informed, use Name as default
+            // TODO: Add support to filters using CategoryParameters
+            // TODO: Create a endpoint that will do the same things, but not paged
+
             var totalItems = source.Count();
             var totalPages = (int)Math.Ceiling(totalItems / (double)parameters.Size);
             var items = _mapper.Map<IEnumerable<CategoryDTO>>(source
