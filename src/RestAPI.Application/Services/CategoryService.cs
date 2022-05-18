@@ -11,6 +11,7 @@ using RestAPI.Domain.MediatorHandler;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Dynamic.Core;
 using System.Threading.Tasks;
 
 namespace RestAPI.Application.Services
@@ -31,10 +32,17 @@ namespace RestAPI.Application.Services
         public PagedResponse<CategoryDTO> GetPagedCategories(CategoryParameters parameters)
         {
             var source = _categoryRepository
-                .Query()
-                .OrderBy(p => p.Name);
+                .Query();
 
-            // TODO: Add support to dynamic order and if not informed, use Name as default
+            if (string.IsNullOrEmpty(parameters.Order))
+            {
+                source = source.OrderBy(p => p.Name);
+            } 
+            else
+            {
+                source = source.OrderBy(parameters.Order);
+            }
+
             // TODO: Add support to filters using CategoryParameters
             // TODO: Create a endpoint that will do the same things, but not paged
 
