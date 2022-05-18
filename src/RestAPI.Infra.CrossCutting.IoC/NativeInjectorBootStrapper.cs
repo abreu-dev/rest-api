@@ -15,7 +15,7 @@ namespace RestAPI.Infra.CrossCutting.IoC
 {
     public static class NativeInjectorBootStrapper
     {
-        public static void RegisterServices(IServiceCollection services) 
+        public static void RegisterServices(IServiceCollection services)
         {
             // Application - AutoMapper
             services.AddAutoMapper(typeof(DomainToDTOMappingProfile), typeof(DTOToDomainMappingProfile));

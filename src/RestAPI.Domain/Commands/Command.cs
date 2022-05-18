@@ -6,7 +6,7 @@ namespace RestAPI.Domain.Commands
 {
     public abstract class Command : IRequest<Unit>
     {
-        public ValidationResult ValidationResult { get; set; } 
+        public ValidationResult ValidationResult { get; set; }
         public string MessageType { get; set; }
         public Guid AggregateId { get; set; }
         public DateTime Timestamp { get; set; }
