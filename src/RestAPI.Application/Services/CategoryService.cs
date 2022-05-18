@@ -8,6 +8,7 @@ using RestAPI.Domain.Commands.CategoryCommands;
 using RestAPI.Domain.Entities;
 using RestAPI.Domain.Interfaces;
 using RestAPI.Domain.MediatorHandler;
+using RestAPI.Domain.Notifications;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -97,6 +98,14 @@ namespace RestAPI.Application.Services
         public async Task PatchCategory(Guid id, JsonPatchDocument<CategoryDTO> patchCategoryDTO)
         {
             var categoryDTO = GetCategoryById(id);
+
+            if (categoryDTO == null)
+            {
+                await _mediator.RaiseDomainNotificationAsync(
+                    new DomainNotification("NotFound", "Category not found", "The informed 'Category' was not found"));
+                return;
+            }
+
             patchCategoryDTO.ApplyTo(categoryDTO);
 
             var command = new UpdateCategoryCommand(id)

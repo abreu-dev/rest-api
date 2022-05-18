@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using RestAPI.Domain.Entities;
 using RestAPI.Infra.Data.Mappings;
+using System;
 
 namespace RestAPI.Infra.Data.Context
 {
@@ -26,6 +27,14 @@ namespace RestAPI.Infra.Data.Context
         public bool IsAvailable()
         {
             return Database.CanConnect();
+        }
+
+        private void LogChangeTracker()
+        {
+            foreach (var entry in ChangeTracker.Entries())
+            {
+                Console.WriteLine($"Entity: {entry.Entity.GetType().Name}, State: { entry.State}");
+            }
         }
     }
 }

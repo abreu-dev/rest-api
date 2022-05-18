@@ -10,7 +10,8 @@ namespace RestAPI.Application.AutoMapper
         {
             CreateMap<CurrencyDTO, Currency>();
             CreateMap<CategoryDTO, Category>();
-            CreateMap<ProductDTO, Product>();
+            CreateMap<ProductDTO, Product>()
+                .ForMember(dest => dest.Category, opt => opt.Ignore());
         }
     }
 }

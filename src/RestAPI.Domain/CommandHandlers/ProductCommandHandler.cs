@@ -1,5 +1,5 @@
 ﻿using MediatR;
-using RestAPI.Domain.Commands.CategoryCommands;
+using RestAPI.Domain.Commands.ProductCommands;
 using RestAPI.Domain.Interfaces;
 using RestAPI.Domain.MediatorHandler;
 using RestAPI.Domain.Notifications;
@@ -9,21 +9,21 @@ using System.Threading.Tasks;
 
 namespace RestAPI.Domain.CommandHandlers
 {
-    public class CategoryCommandHandler :
-        IRequestHandler<AddCategoryCommand, Unit>,
-        IRequestHandler<UpdateCategoryCommand, Unit>,
-        IRequestHandler<DeleteCategoryCommand, Unit>
+    public class ProductCommandHandler :
+        IRequestHandler<AddProductCommand, Unit>,
+        IRequestHandler<UpdateProductCommand, Unit>,
+        IRequestHandler<DeleteProductCommand, Unit>
     {
         private readonly IMediatorHandler _mediatorHandler;
-        private readonly ICategoryRepository _categoryRepository;
+        private readonly IProductRepository _productRepository;
 
-        public CategoryCommandHandler(ICategoryRepository categoryRepository, IMediatorHandler mediatorHandler)
+        public ProductCommandHandler(IProductRepository productRepository, IMediatorHandler mediatorHandler)
         {
-            _categoryRepository = categoryRepository;
+            _productRepository = productRepository;
             _mediatorHandler = mediatorHandler;
         }
 
-        public async Task<Unit> Handle(AddCategoryCommand request, CancellationToken cancellationToken)
+        public async Task<Unit> Handle(AddProductCommand request, CancellationToken cancellationToken)
         {
             if (!request.IsValid())
             {
@@ -35,20 +35,20 @@ namespace RestAPI.Domain.CommandHandlers
                 return Unit.Value;
             }
 
-            if (_categoryRepository.Query().Where(category => category.Name == request.Category.Name).Any())
+            if (_productRepository.Query().Where(product => product.Name == request.Product.Name).Any())
             {
                 await _mediatorHandler.RaiseDomainNotificationAsync(
                     new DomainNotification("DuplicatedValue", "Name duplicated", "The field 'Name' must be unique"));
                 return Unit.Value;
             }
 
-            _categoryRepository.AddCategory(request.Category);
-            _categoryRepository.UnitOfWork.Commit();
+            _productRepository.AddProduct(request.Product);
+            _productRepository.UnitOfWork.Commit();
 
             return Unit.Value;
         }
 
-        public async Task<Unit> Handle(UpdateCategoryCommand request, CancellationToken cancellationToken)
+        public async Task<Unit> Handle(UpdateProductCommand request, CancellationToken cancellationToken)
         {
             if (!request.IsValid())
             {
@@ -60,31 +60,38 @@ namespace RestAPI.Domain.CommandHandlers
                 return Unit.Value;
             }
 
-            var category = _categoryRepository.GetCategoryById(request.AggregateId);
-            if (category == null)
+            var product = _productRepository.GetProductById(request.AggregateId);
+            if (product == null)
             {
                 await _mediatorHandler.RaiseDomainNotificationAsync(
-                    new DomainNotification("NotFound", "Category not found", "The informed 'Category' was not found"));
+                    new DomainNotification("NotFound", "Product not found", "The informed 'Product' was not found"));
                 return Unit.Value;
             }
 
-            if (_categoryRepository.Query().Where(c => c.Id != request.AggregateId
-                                                    && c.Name == request.Category.Name).Any())
+            if (_productRepository.Query().Where(p => p.Id != request.AggregateId
+                                                   && p.Name == request.Product.Name).Any())
             {
                 await _mediatorHandler.RaiseDomainNotificationAsync(
                     new DomainNotification("DuplicatedValue", "Name duplicated", "The field 'Name' must be unique"));
                 return Unit.Value;
             }
 
-            category.Name = request.Category.Name;
+            product.Name = request.Product.Name;
+            product.Description = request.Product.Description;
+            product.Image = request.Product.Image;
+            product.QuantityAvailable = request.Product.QuantityAvailable;
+            product.IsActive = request.Product.IsActive;
+            product.UnitOfMeasurement = request.Product.UnitOfMeasurement;
+            product.Currency = request.Product.Currency;
+            product.CategoryId = request.Product.CategoryId;
 
-            _categoryRepository.UpdateCategory(category);
-            _categoryRepository.UnitOfWork.Commit();
+            _productRepository.UpdateProduct(product);
+            _productRepository.UnitOfWork.Commit();
 
             return Unit.Value;
         }
 
-        public async Task<Unit> Handle(DeleteCategoryCommand request, CancellationToken cancellationToken)
+        public async Task<Unit> Handle(DeleteProductCommand request, CancellationToken cancellationToken)
         {
             if (!request.IsValid())
             {
@@ -96,14 +103,14 @@ namespace RestAPI.Domain.CommandHandlers
                 return Unit.Value;
             }
 
-            var category = _categoryRepository.GetCategoryById(request.AggregateId);
-            if (category == null)
+            var product = _productRepository.GetProductById(request.AggregateId);
+            if (product == null)
             {
                 return Unit.Value;
             }
 
-            _categoryRepository.DeleteCategory(category);
-            _categoryRepository.UnitOfWork.Commit();
+            _productRepository.DeleteProduct(product);
+            _productRepository.UnitOfWork.Commit();
 
             return Unit.Value;
         }

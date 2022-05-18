@@ -5,6 +5,7 @@ using RestAPI.Application.Interfaces;
 using RestAPI.Application.Services;
 using RestAPI.Domain.CommandHandlers;
 using RestAPI.Domain.Commands.CategoryCommands;
+using RestAPI.Domain.Commands.ProductCommands;
 using RestAPI.Domain.Interfaces;
 using RestAPI.Domain.MediatorHandler;
 using RestAPI.Domain.Notifications;
@@ -35,6 +36,10 @@ namespace RestAPI.Infra.CrossCutting.IoC
             services.AddScoped<IRequestHandler<AddCategoryCommand, Unit>, CategoryCommandHandler>();
             services.AddScoped<IRequestHandler<UpdateCategoryCommand, Unit>, CategoryCommandHandler>();
             services.AddScoped<IRequestHandler<DeleteCategoryCommand, Unit>, CategoryCommandHandler>();
+
+            services.AddScoped<IRequestHandler<AddProductCommand, Unit>, ProductCommandHandler>();
+            services.AddScoped<IRequestHandler<UpdateProductCommand, Unit>, ProductCommandHandler>();
+            services.AddScoped<IRequestHandler<DeleteProductCommand, Unit>, ProductCommandHandler>();
 
             // Infra - Data - Contexts
             services.AddScoped<IRestApiDbContext, RestApiDbContext>();
