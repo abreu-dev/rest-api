@@ -18,8 +18,6 @@ namespace RestAPI.Application.Services
 {
     public class CategoryService : ICategoryService
     {
-        // TODO: Create a endpoint that will do the same things, but not paged
-
         private readonly IMapper _mapper;
         private readonly ICategoryRepository _categoryRepository;
         private readonly IMediatorHandler _mediator;
