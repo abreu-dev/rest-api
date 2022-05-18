@@ -18,6 +18,8 @@ namespace RestAPI.Application.Services
 {
     public class CategoryService : ICategoryService
     {
+        // TODO: Create a endpoint that will do the same things, but not paged
+
         private readonly IMapper _mapper;
         private readonly ICategoryRepository _categoryRepository;
         private readonly IMediatorHandler _mediator;
@@ -34,17 +36,30 @@ namespace RestAPI.Application.Services
             var source = _categoryRepository
                 .Query();
 
-            if (string.IsNullOrEmpty(parameters.Order))
-            {
-                source = source.OrderBy(p => p.Name);
-            } 
-            else
-            {
-                source = source.OrderBy(parameters.Order);
-            }
+            source = string.IsNullOrEmpty(parameters.Order) ? source.OrderBy(p => p.Name) : source.OrderBy(parameters.Order);
 
-            // TODO: Add support to filters using CategoryParameters
-            // TODO: Create a endpoint that will do the same things, but not paged
+            if (!string.IsNullOrEmpty(parameters.Name))
+            {
+                if (parameters.Name.StartsWith("*") && parameters.Name.EndsWith("*"))
+                {
+                    var formated = parameters.Name[1..^1];
+                    source = source.Where(p => p.Name.Contains(formated));
+                }
+                else if (parameters.Name.StartsWith("*"))
+                {
+                    var formated = parameters.Name[1..];
+                    source = source.Where(p => p.Name.EndsWith(formated));
+                }
+                else if (parameters.Name.EndsWith("*"))
+                {
+                    var formated = parameters.Name[0..^1];
+                    source = source.Where(p => p.Name.StartsWith(formated));
+                }
+                else
+                {
+                    source = source.Where(p => string.Equals(p.Name, parameters.Name));
+                }
+            }
 
             var totalItems = source.Count();
             var totalPages = (int)Math.Ceiling(totalItems / (double)parameters.Size);
