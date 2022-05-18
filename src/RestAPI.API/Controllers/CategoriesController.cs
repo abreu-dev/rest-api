@@ -1,4 +1,5 @@
 ﻿using MediatR;
+using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
 using RestAPI.Application.DTOs;
 using RestAPI.Application.Interfaces;
@@ -61,6 +62,27 @@ namespace RestAPI.API.Controllers
         public async Task<IActionResult> Put(Guid id, [FromBody] CategoryDTO categoryDTO)
         {
             await _categoryService.UpdateCategory(id, categoryDTO);
+
+            if (_notifications.HasNotifications())
+            {
+                var response = new Response("/categories");
+
+                _notifications.GetNotifications().ForEach(notification =>
+                {
+                    response.Errors.Add(new ResponseError(notification.Type, notification.Error, notification.Detail));
+                });
+
+                return BadRequest(response);
+            }
+
+            return Ok();
+        }
+
+        [HttpPatch]
+        [Route("categories/{id:guid}")]
+        public async Task<IActionResult> Patch(Guid id, [FromBody] JsonPatchDocument<CategoryDTO> patchCategoryDTO)
+        {
+            await _categoryService.PatchCategory(id, patchCategoryDTO);
 
             if (_notifications.HasNotifications())
             {

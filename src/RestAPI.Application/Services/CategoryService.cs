@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.JsonPatch;
 using RestAPI.Application.DTOs;
 using RestAPI.Application.Interfaces;
 using RestAPI.Application.Parameters;
@@ -60,6 +61,19 @@ namespace RestAPI.Application.Services
 
         public async Task UpdateCategory(Guid id, CategoryDTO categoryDTO)
         {
+            var command = new UpdateCategoryCommand(id)
+            {
+                Category = _mapper.Map<Category>(categoryDTO)
+            };
+
+            await _mediator.SendCommand(command);
+        }
+
+        public async Task PatchCategory(Guid id, JsonPatchDocument<CategoryDTO> patchCategoryDTO)
+        {
+            var categoryDTO = GetCategoryById(id);
+            patchCategoryDTO.ApplyTo(categoryDTO);
+
             var command = new UpdateCategoryCommand(id)
             {
                 Category = _mapper.Map<Category>(categoryDTO)

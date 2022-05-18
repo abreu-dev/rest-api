@@ -20,7 +20,7 @@ namespace RestAPI.API
         public void ConfigureServices(IServiceCollection services)
         {
             // WebAPI Config
-            services.AddControllers();
+            services.AddControllers().AddNewtonsoftJson();
 
             // Setting DBContexts
             services.AddDatabaseConfiguration();

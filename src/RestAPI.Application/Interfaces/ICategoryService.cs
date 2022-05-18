@@ -1,4 +1,5 @@
-﻿using RestAPI.Application.DTOs;
+﻿using Microsoft.AspNetCore.JsonPatch;
+using RestAPI.Application.DTOs;
 using RestAPI.Application.Parameters;
 using RestAPI.Application.Responses;
 using System;
@@ -14,6 +15,7 @@ namespace RestAPI.Application.Interfaces
 
         Task AddCategory(CategoryDTO categoryDTO);
         Task UpdateCategory(Guid id, CategoryDTO categoryDTO);
+        Task PatchCategory(Guid id, JsonPatchDocument<CategoryDTO> patchCategoryDTO);
         Task DeleteCategory(Guid id);
     }
 }
