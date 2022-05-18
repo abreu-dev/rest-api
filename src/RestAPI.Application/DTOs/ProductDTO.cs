@@ -1,7 +1,10 @@
-﻿namespace RestAPI.Application.DTOs
+﻿using System;
+
+namespace RestAPI.Application.DTOs
 {
-    public class ProductDTO : DTO
+    public class ProductDTO
     {
+        public Guid Id { get; set; }
         public string Name { get; set; }
         public string Description { get; set; }
         public string Image { get; set; }

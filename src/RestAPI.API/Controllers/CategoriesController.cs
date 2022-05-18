@@ -22,14 +22,21 @@ namespace RestAPI.API.Controllers
         }
 
         [HttpGet]
-        [Route("api/categories:paginated")]
-        public PagedResponse<CategoryDTO> GetPagedCategories([FromQuery] CategoryParameters parameters)
+        [Route("categories:paginated")]
+        public PagedResponse<CategoryDTO> Get([FromQuery] CategoryParameters parameters)
         {
             return _categoryService.GetPagedCategories(parameters);
         }
 
+        [HttpGet]
+        [Route("categories/{id:guid}")]
+        public CategoryDTO Get(Guid id)
+        {
+            return _categoryService.GetCategoryById(id);
+        }
+
         [HttpPost]
-        [Route("api/categories")]
+        [Route("categories")]
         public async Task<IActionResult> Post([FromBody] CategoryDTO categoryDTO)
         {
             await _categoryService.AddCategory(categoryDTO);
@@ -50,7 +57,7 @@ namespace RestAPI.API.Controllers
         }
 
         [HttpPut]
-        [Route("api/categories/{id:guid}")]
+        [Route("categories/{id:guid}")]
         public async Task<IActionResult> Put(Guid id, [FromBody] CategoryDTO categoryDTO)
         {
             await _categoryService.UpdateCategory(id, categoryDTO);
@@ -71,7 +78,7 @@ namespace RestAPI.API.Controllers
         }
 
         [HttpDelete]
-        [Route("api/categories/{id:guid}")]
+        [Route("categories/{id:guid}")]
         public async Task<IActionResult> Delete(Guid id)
         {
             await _categoryService.DeleteCategory(id);

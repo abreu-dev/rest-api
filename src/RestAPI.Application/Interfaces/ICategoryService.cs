@@ -10,6 +10,8 @@ namespace RestAPI.Application.Interfaces
     {
         PagedResponse<CategoryDTO> GetPagedCategories(CategoryParameters parameters);
 
+        CategoryDTO GetCategoryById(Guid id);
+
         Task AddCategory(CategoryDTO categoryDTO);
         Task UpdateCategory(Guid id, CategoryDTO categoryDTO);
         Task DeleteCategory(Guid id);

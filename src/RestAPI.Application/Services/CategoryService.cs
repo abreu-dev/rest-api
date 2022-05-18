@@ -43,6 +43,11 @@ namespace RestAPI.Application.Services
             return new PagedResponse<CategoryDTO>(items, parameters.Page, totalItems, totalPages);
         }
 
+        public CategoryDTO GetCategoryById(Guid id)
+        {
+            return _mapper.Map<CategoryDTO>(_categoryRepository.GetCategoryById(id));
+        }
+
         public async Task AddCategory(CategoryDTO categoryDTO)
         {
             var command = new AddCategoryCommand()
