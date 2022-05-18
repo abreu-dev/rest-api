@@ -1,6 +1,7 @@
 ﻿using RestAPI.Domain.Entities;
 using RestAPI.Domain.Interfaces;
 using RestAPI.Infra.Data.Context;
+using System;
 using System.Linq;
 
 namespace RestAPI.Infra.Data.Repositories
@@ -21,9 +22,24 @@ namespace RestAPI.Infra.Data.Repositories
             return _restApiDbContext.Categories;
         }
 
-        public void Add(Category category)
+        public Category GetCategoryById(Guid id)
+        {
+            return _restApiDbContext.Categories.Find(id);
+        }
+
+        public void AddCategory(Category category)
         {
             _restApiDbContext.Categories.Add(category);
+        }
+
+        public void UpdateCategory(Category category)
+        {
+            _restApiDbContext.Categories.Update(category);
+        }
+
+        public void DeleteCategory(Category category)
+        {
+            _restApiDbContext.Categories.Remove(category);
         }
     }
 }

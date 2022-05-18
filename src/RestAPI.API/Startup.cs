@@ -1,3 +1,4 @@
+using MediatR;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
@@ -26,6 +27,9 @@ namespace RestAPI.API
 
             // Setting Swagger
             services.AddSwaggerConfiguration();
+
+            // Setting MediatR
+            services.AddMediatR(typeof(Startup));
 
             // .NET Native DI Abstraction
             services.AddDependencyInjectionConfiguration();

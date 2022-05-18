@@ -1,6 +1,8 @@
 ﻿using RestAPI.Application.DTOs;
 using RestAPI.Application.Parameters;
 using RestAPI.Application.Responses;
+using System;
+using System.Threading.Tasks;
 
 namespace RestAPI.Application.Interfaces
 {
@@ -8,6 +10,8 @@ namespace RestAPI.Application.Interfaces
     {
         PagedResponse<CategoryDTO> GetPagedCategories(CategoryParameters parameters);
 
-        Response AddCategory(CategoryDTO categoryDTO);
+        Task AddCategory(CategoryDTO categoryDTO);
+        Task UpdateCategory(Guid id, CategoryDTO categoryDTO);
+        Task DeleteCategory(Guid id);
     }
 }

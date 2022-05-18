@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Diagnostics;
 
 namespace RestAPI.Application.Responses
 {
@@ -8,10 +9,10 @@ namespace RestAPI.Application.Responses
         public string TraceId { get; set; }
         public List<ResponseError> Errors { get; set; }
 
-        public Response(string instance, string traceId)
+        public Response(string instance)
         {
             Instance = instance;
-            TraceId = traceId;
+            TraceId = Activity.Current.TraceId.ToString();
             Errors = new List<ResponseError>();
         }
 

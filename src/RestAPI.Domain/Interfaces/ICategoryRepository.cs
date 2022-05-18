@@ -1,4 +1,5 @@
 ﻿using RestAPI.Domain.Entities;
+using System;
 using System.Linq;
 
 namespace RestAPI.Domain.Interfaces
@@ -9,6 +10,10 @@ namespace RestAPI.Domain.Interfaces
 
         IQueryable<Category> Query();
 
-        void Add(Category category);
+        Category GetCategoryById(Guid id);
+
+        void AddCategory(Category category);
+        void UpdateCategory(Category category);
+        void DeleteCategory(Category category);
     }
 }
