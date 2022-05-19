@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.JsonPatch;
 using RestAPI.Application.DTOs;
+using RestAPI.Application.Helpers;
 using RestAPI.Application.Interfaces;
 using RestAPI.Application.Parameters;
 using RestAPI.Application.Responses;
@@ -12,6 +13,7 @@ using RestAPI.Domain.Notifications;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Dynamic.Core;
 using System.Threading.Tasks;
 
 namespace RestAPI.Application.Services
@@ -32,8 +34,19 @@ namespace RestAPI.Application.Services
         public PagedResponse<ProductDTO> GetPagedProducts(ProductParameters parameters)
         {
             var source = _productRepository
-                .Query()
-                .OrderBy(p => p.Name);
+                .Query();
+
+            source = string.IsNullOrEmpty(parameters.Order) ? source.OrderBy(p => p.Name) : source.OrderBy(parameters.Order);
+
+            if (!string.IsNullOrEmpty(parameters.Name))
+            {
+                source = source.ApplyFilter("Name", parameters.Name);
+            }
+
+            if (!string.IsNullOrEmpty(parameters.Description))
+            {
+                source = source.ApplyFilter("Description", parameters.Description);
+            }
 
             var totalItems = source.Count();
             var totalPages = (int)Math.Ceiling(totalItems / (double)parameters.Size);
