@@ -1,5 +1,7 @@
-﻿using System.Linq;
+﻿using System.Collections.Generic;
+using System.Linq;
 using System.Linq.Dynamic.Core;
+using System.Text;
 
 namespace RestAPI.Application.Helpers
 {
@@ -7,30 +9,71 @@ namespace RestAPI.Application.Helpers
     {
         private static string CHARACTER_CONTAINS = "*";
 
-        public static IQueryable<TEntity> ApplyFilter<TEntity>(this IQueryable<TEntity> source, string propertyName, string propertyValue)
+        public static IQueryable<TEntity> ApplyFilter<TEntity>(this IQueryable<TEntity> source, string propertyName, IEnumerable<string> propertyValues)
         {
-            if (propertyValue.StartsWith(CHARACTER_CONTAINS) && propertyValue.EndsWith(CHARACTER_CONTAINS))
+            var predicate = new StringBuilder();
+            var parameters = new List<string>();
+
+            foreach (var property in propertyValues.Select((value, index) => new { value, index }))
             {
-                var predicate = string.Format("{0}.ToLower().Contains(@0)", propertyName);
-                source = source.Where(predicate, propertyValue[1..^1].ToLower());
+                string statement;
+
+                if (property.value.StartsWith(CHARACTER_CONTAINS) && property.value.EndsWith(CHARACTER_CONTAINS))
+                {
+                    statement = "{0}.ToLower().Contains(@{1})";
+                    parameters.Add(property.value[1..^1].ToLower());
+                }
+                else if (property.value.StartsWith(CHARACTER_CONTAINS))
+                {
+                    statement = "{0}.ToLower().EndsWith(@{1})";
+                    parameters.Add(property.value[1..].ToLower());
+                }
+                else if (property.value.EndsWith(CHARACTER_CONTAINS))
+                {
+                    statement = "{0}.ToLower().StartsWith(@{1})";
+                    parameters.Add(property.value[0..^1].ToLower());
+                }
+                else
+                {
+                    statement = "{0}.Equals(@{1})";
+                    parameters.Add(property.value);
+                }
+
+                if (predicate.Length > 0)
+                {
+                    var orStatement = string.Format(" OR {0}", statement);
+                    predicate.Append(string.Format(orStatement, propertyName, property.index));
+                }
+                else
+                {
+                    predicate.Append(string.Format(statement, propertyName, property.index));
+                }
             }
-            else if (propertyValue.StartsWith(CHARACTER_CONTAINS))
+
+            return source.Where(predicate.ToString(), parameters.ToArray());
+        }
+
+        public static IQueryable<TEntity> ApplyFilter<TEntity>(this IQueryable<TEntity> source, string propertyName, int? minPropertyValue, int? maxPropertyValue)
+        {
+            if (minPropertyValue != null)
             {
-                var predicate = string.Format("{0}.ToLower().EndsWith(@0)", propertyName);
-                source = source.Where(predicate, propertyValue[1..].ToLower());
+                var predicate = string.Format("{0} >= @0", propertyName);
+                source = source.Where(predicate, minPropertyValue);
             }
-            else if (propertyValue.EndsWith(CHARACTER_CONTAINS))
+
+            if (maxPropertyValue != null)
             {
-                var predicate = string.Format("{0}.ToLower().StartsWith(@0)", propertyName);
-                source = source.Where(predicate, propertyValue[0..^1].ToLower());
-            }
-            else
-            {
-                var predicate = string.Format("{0}.ToLower().Equals(@0)", propertyName);
-                source = source.Where(predicate, propertyValue.ToLower());
+                var predicate = string.Format("{0} <= @0", propertyName);
+                source = source.Where(predicate, maxPropertyValue);
             }
 
             return source;
+        }
+
+        public static IQueryable<TEntity> ApplyFilter<TEntity>(this IQueryable<TEntity> source, string propertyName, bool propertyValue)
+        {
+            var predicate = string.Format("{0}.Equals(@0)", propertyName);
+            return source.Where(predicate, propertyValue);
         }
     }
 }

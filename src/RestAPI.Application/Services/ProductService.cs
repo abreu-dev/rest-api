@@ -38,14 +38,19 @@ namespace RestAPI.Application.Services
 
             source = string.IsNullOrEmpty(parameters.Order) ? source.OrderBy(p => p.Name) : source.OrderBy(parameters.Order);
 
-            if (!string.IsNullOrEmpty(parameters.Name))
+            if (parameters.Name.Any())
             {
                 source = source.ApplyFilter("Name", parameters.Name);
             }
 
-            if (!string.IsNullOrEmpty(parameters.Description))
+            if (parameters.MinQuantityAvailable != null || parameters.MaxQuantityAvailable != null)
             {
-                source = source.ApplyFilter("Description", parameters.Description);
+                source = source.ApplyFilter("QuantityAvailable", parameters.MinQuantityAvailable, parameters.MaxQuantityAvailable);
+            }
+
+            if (parameters.IsActive != null)
+            {
+                source = source.ApplyFilter("IsActive", parameters.IsActive.Value);
             }
 
             var totalItems = source.Count();

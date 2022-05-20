@@ -1,8 +1,12 @@
-﻿namespace RestAPI.Application.Parameters
+﻿using System.Collections.Generic;
+
+namespace RestAPI.Application.Parameters
 {
     public class ProductParameters : QueryParameters 
     {
-        public string Name { get; set; }
-        public string Description { get; set; }
+        public IEnumerable<string> Name { get; set; }
+        public int? MinQuantityAvailable { get; set; }
+        public int? MaxQuantityAvailable { get; set; }
+        public bool? IsActive { get; set; }
     }
 }
