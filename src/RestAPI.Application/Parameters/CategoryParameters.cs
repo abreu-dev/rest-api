@@ -1,7 +1,14 @@
-﻿namespace RestAPI.Application.Parameters
+﻿using System.Collections.Generic;
+
+namespace RestAPI.Application.Parameters
 {
     public class CategoryParameters : QueryParameters
     {
-        public string Name { get; set; }
+        public IEnumerable<string> Name { get; set; }
+
+        public CategoryParameters()
+        {
+            Name = new List<string>();
+        }
     }
 }

@@ -1,9 +1,9 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.JsonPatch;
 using RestAPI.Application.DTOs;
+using RestAPI.Application.Helpers;
 using RestAPI.Application.Interfaces;
 using RestAPI.Application.Parameters;
-using RestAPI.Application.Responses;
 using RestAPI.Domain.Commands.CategoryCommands;
 using RestAPI.Domain.Entities;
 using RestAPI.Domain.Interfaces;
@@ -30,44 +30,19 @@ namespace RestAPI.Application.Services
             _mediator = mediator;
         }
 
-        public PagedResponse<CategoryDTO> GetPagedCategories(CategoryParameters parameters)
+        public IEnumerable<CategoryDTO> GetCategories(CategoryParameters parameters)
         {
             var source = _categoryRepository
                 .Query();
 
             source = string.IsNullOrEmpty(parameters.Order) ? source.OrderBy(p => p.Name) : source.OrderBy(parameters.Order);
 
-            if (!string.IsNullOrEmpty(parameters.Name))
+            if (parameters.Name.Any())
             {
-                if (parameters.Name.StartsWith("*") && parameters.Name.EndsWith("*"))
-                {
-                    var formated = parameters.Name[1..^1];
-                    source = source.Where(p => p.Name.Contains(formated));
-                }
-                else if (parameters.Name.StartsWith("*"))
-                {
-                    var formated = parameters.Name[1..];
-                    source = source.Where(p => p.Name.EndsWith(formated));
-                }
-                else if (parameters.Name.EndsWith("*"))
-                {
-                    var formated = parameters.Name[0..^1];
-                    source = source.Where(p => p.Name.StartsWith(formated));
-                }
-                else
-                {
-                    source = source.Where(p => string.Equals(p.Name, parameters.Name));
-                }
+                source = source.ApplyFilter("Name", parameters.Name);
             }
 
-            var totalItems = source.Count();
-            var totalPages = (int)Math.Ceiling(totalItems / (double)parameters.Size);
-            var items = _mapper.Map<IEnumerable<CategoryDTO>>(source
-                .Skip(parameters.Page * parameters.Size)
-                .Take(parameters.Size)
-                .ToList());
-
-            return new PagedResponse<CategoryDTO>(items, parameters.Page, totalItems, totalPages);
+            return _mapper.Map<IEnumerable<CategoryDTO>>(source);
         }
 
         public CategoryDTO GetCategoryById(Guid id)

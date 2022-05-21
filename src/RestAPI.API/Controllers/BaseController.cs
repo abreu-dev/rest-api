@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace RestAPI.API.Controllers
 {
     [ApiController]
-    [Route("api")]
+    [Route("catalogue/")]
     public abstract class BaseController : ControllerBase
     {
         protected IActionResult ServiceUnavailable()

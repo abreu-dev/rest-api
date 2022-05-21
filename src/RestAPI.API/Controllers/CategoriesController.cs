@@ -7,6 +7,7 @@ using RestAPI.Application.Parameters;
 using RestAPI.Application.Responses;
 using RestAPI.Domain.Notifications;
 using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace RestAPI.API.Controllers
@@ -23,10 +24,10 @@ namespace RestAPI.API.Controllers
         }
 
         [HttpGet]
-        [Route("categories:paginated")]
-        public PagedResponse<CategoryDTO> Get([FromQuery] CategoryParameters parameters)
+        [Route("categories")]
+        public IEnumerable<CategoryDTO> Get([FromQuery] CategoryParameters parameters)
         {
-            return _categoryService.GetPagedCategories(parameters);
+            return _categoryService.GetCategories(parameters);
         }
 
         [HttpGet]

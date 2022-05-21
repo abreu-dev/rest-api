@@ -1,15 +1,15 @@
 ﻿using Microsoft.AspNetCore.JsonPatch;
 using RestAPI.Application.DTOs;
 using RestAPI.Application.Parameters;
-using RestAPI.Application.Responses;
 using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace RestAPI.Application.Interfaces
 {
     public interface ICategoryService
     {
-        PagedResponse<CategoryDTO> GetPagedCategories(CategoryParameters parameters);
+        IEnumerable<CategoryDTO> GetCategories(CategoryParameters parameters);
 
         CategoryDTO GetCategoryById(Guid id);
 
