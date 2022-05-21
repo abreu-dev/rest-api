@@ -1,4 +1,5 @@
-﻿using System;
+﻿using RestAPI.Domain.Enums;
+using System;
 
 namespace RestAPI.Application.DTOs
 {
@@ -10,7 +11,8 @@ namespace RestAPI.Application.DTOs
         public string Image { get; set; }
         public int QuantityAvailable { get; set; }
         public bool IsActive { get; set; }
-        public string UnitOfMeasurement { get; set; }
+        public DateTime CreatedAt { get; set; }
+        public UnitOfMeasurement UnitOfMeasurement { get; set; }
         public CurrencyDTO Currency { get; set; }
         public CategoryDTO Category { get; set; }
     }

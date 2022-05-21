@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Dynamic.Core;
 using System.Text;
@@ -53,7 +54,30 @@ namespace RestAPI.Application.Helpers
             return source.Where(predicate.ToString(), parameters.ToArray());
         }
 
+        public static IQueryable<TEntity> ApplyFilter<TEntity>(this IQueryable<TEntity> source, string propertyName, int propertyValue)
+        {
+            var predicate = string.Format("{0} = @0", propertyName);
+            return source.Where(predicate, propertyValue);
+        }
+
         public static IQueryable<TEntity> ApplyFilter<TEntity>(this IQueryable<TEntity> source, string propertyName, int? minPropertyValue, int? maxPropertyValue)
+        {
+            if (minPropertyValue != null)
+            {
+                var predicate = string.Format("{0} >= @0", propertyName);
+                source = source.Where(predicate, minPropertyValue);
+            }
+
+            if (maxPropertyValue != null)
+            {
+                var predicate = string.Format("{0} <= @0", propertyName);
+                source = source.Where(predicate, maxPropertyValue);
+            }
+
+            return source;
+        }
+
+        public static IQueryable<TEntity> ApplyFilter<TEntity>(this IQueryable<TEntity> source, string propertyName, double? minPropertyValue, double? maxPropertyValue)
         {
             if (minPropertyValue != null)
             {
@@ -75,5 +99,23 @@ namespace RestAPI.Application.Helpers
             var predicate = string.Format("{0}.Equals(@0)", propertyName);
             return source.Where(predicate, propertyValue);
         }
+
+        public static IQueryable<TEntity> ApplyFilter<TEntity>(this IQueryable<TEntity> source, string propertyName, DateTime? minPropertyValue, DateTime? maxPropertyValue)
+        {
+            if (minPropertyValue != null)
+            {
+                var predicate = string.Format("{0} >= @0", propertyName);
+                source = source.Where(predicate, minPropertyValue);
+            }
+
+            if (maxPropertyValue != null)
+            {
+                var predicate = string.Format("{0} <= @0", propertyName);
+                source = source.Where(predicate, maxPropertyValue);
+            }
+
+            return source;
+        }
+
     }
 }

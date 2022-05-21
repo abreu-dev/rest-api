@@ -3,6 +3,7 @@ using RestAPI.Domain.Commands.ProductCommands;
 using RestAPI.Domain.Interfaces;
 using RestAPI.Domain.MediatorHandler;
 using RestAPI.Domain.Notifications;
+using System;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
@@ -42,6 +43,7 @@ namespace RestAPI.Domain.CommandHandlers
                 return Unit.Value;
             }
 
+            request.Product.CreatedAt = DateTime.UtcNow;
             _productRepository.AddProduct(request.Product);
             _productRepository.UnitOfWork.Commit();
 

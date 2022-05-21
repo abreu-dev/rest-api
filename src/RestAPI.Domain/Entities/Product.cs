@@ -10,6 +10,7 @@ namespace RestAPI.Domain.Entities
         public string Image { get; set; }
         public int QuantityAvailable { get; set; }
         public bool IsActive { get; set; }
+        public DateTime CreatedAt { get; set; }
         public UnitOfMeasurement UnitOfMeasurement { get; set; }
 
         public Currency Currency { get; set; }

@@ -7,6 +7,7 @@ using RestAPI.Application.Parameters;
 using RestAPI.Application.Responses;
 using RestAPI.Domain.Commands.ProductCommands;
 using RestAPI.Domain.Entities;
+using RestAPI.Domain.Enums;
 using RestAPI.Domain.Interfaces;
 using RestAPI.Domain.MediatorHandler;
 using RestAPI.Domain.Notifications;
@@ -51,6 +52,26 @@ namespace RestAPI.Application.Services
             if (parameters.IsActive != null)
             {
                 source = source.ApplyFilter("IsActive", parameters.IsActive.Value);
+            }
+
+            if (parameters.Category.Any())
+            {
+                source = source.ApplyFilter("Category.Name", parameters.Category);
+            }
+
+            if (parameters.UnitOfMeasurement != null)
+            {
+                source = source.ApplyFilter("UnitOfMeasurement", (int)parameters.UnitOfMeasurement);
+            }
+
+            if (parameters.MinValue != null || parameters.MaxValue != null)
+            {
+                source = source.ApplyFilter("Currency.Value", parameters.MinValue, parameters.MaxValue);
+            }
+
+            if (parameters.MinCreatedAt != null || parameters.MaxCreatedAt != null)
+            {
+                source = source.ApplyFilter("CreatedAt", parameters.MinCreatedAt, parameters.MaxCreatedAt);
             }
 
             var totalItems = source.Count();

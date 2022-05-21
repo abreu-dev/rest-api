@@ -2,15 +2,17 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using RestAPI.Infra.Data.Context;
 
 namespace RestAPI.Infra.Data.Migrations
 {
     [DbContext(typeof(RestApiDbContext))]
-    partial class RestApiDbContextModelSnapshot : ModelSnapshot
+    [Migration("20220521222209_Product_CreatedAt")]
+    partial class Product_CreatedAt
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
