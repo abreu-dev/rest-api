@@ -12,7 +12,7 @@ namespace RestAPI.Application.DTOs
         public int QuantityAvailable { get; set; }
         public bool IsActive { get; set; }
         public DateTime CreatedAt { get; set; }
-        public UnitOfMeasurement UnitOfMeasurement { get; set; }
+        public string UnitOfMeasurement { get; set; }
         public CurrencyDTO Currency { get; set; }
         public CategoryDTO Category { get; set; }
     }
